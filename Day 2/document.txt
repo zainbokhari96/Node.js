@@ -1,0 +1,23 @@
+To restart postgresql after an upgrade:
+  brew services restart postgresql
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+
+
+
+// For Sequelize Directory Structure Use:
+
+- sequelize init
+
+// For Creation Of Model Use
+
+- sequelize model:generate --name Customer --attributes name:string,password:string,email:string
+- sequelize model:generate --name Product --attributes name:string,description:string    
+
+// For Migration Run This Command
+
+- sequelize db:migrate
+
+// Create New Migration
+
+- sequelize migration:generate --name add-associations
