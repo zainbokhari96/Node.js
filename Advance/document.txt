@@ -10,6 +10,7 @@ Or, if you don't want/need a background service you can just run:
 - sequelize init
 
 // For Creation Of Model Use
+// Table names are plural 
 
 - sequelize model:generate --name Customer --attributes name:string,password:string,email:string
 - sequelize model:generate --name Product --attributes name:string,description:string    
@@ -18,6 +19,20 @@ Or, if you don't want/need a background service you can just run:
 
 - sequelize db:migrate
 
+
+// this command will revert most the recent migration.
+- sequelize db:migrate:undo
+
+
 // Create New Migration
 
 - sequelize migration:generate --name add-associations
+
+// Order belongs to a Customer
+// Order is source and Customer is Target
+// Association will be added in Order
+// Foreign key will be added in Order
+
+// Payment hasOne Order
+// Association will be added in Payment
+// Foreign key will be added in Order
