@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      paranoid:true,  //For Soft Delete Use this
       sequelize,
       modelName: "Customer",
     }
