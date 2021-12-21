@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         validate: {
           customValidator(value) {
-            if (this.age >= 10) {
+            if (parseInt(this.age) <= 10) {
               throw new Error("Age can't be less than 10");
             }
           },
@@ -43,10 +43,18 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      paranoid:true,  //For Soft Delete Use this
+      paranoid: true, //For Soft Delete Use this
       sequelize,
       modelName: "Customer",
     }
   );
+
+  Customer.addHook("beforeValidate", (customer, options) => {
+    console.log("Before Validate Hook Trigger", customer.name);
+  });
+
+  Customer.addHook("afterValidate", "someCustomName", (customer, options) => {
+    console.log("After Validate Hook Trigger", customer.email);
+  });
   return Customer;
 };
