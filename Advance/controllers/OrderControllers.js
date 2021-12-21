@@ -1,47 +1,55 @@
 const Model = require("../models");
 const OrderModel = Model.Order;
+const CustomerModel = require("../models").Customer;
 
 // Declare Relation For Foreign Keys
 const Customer = OrderModel.belongsTo(Model.Customer);
 
 // CREATE NEW ORDER ROUTE
-module.exports.create = (req, res) => {
-  console.log(req.body.id);
-  const order = {
+module.exports.create = async (req, res) => {
+  const payload = {
     trackId: Math.floor(Math.random() * 100),
-    CustomerId: req.body.id,
   };
-  OrderModel.create(order, { include: [Customer] })
-    .then((response) => {
-      console.log(response);
-      res.status(200).json({
-        message: "Order Created Sucessfully",
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({
-        error: error ? error.errors[0].message : "Internal Server Error",
-      });
+
+  // OrderModel.create(order, { include: [Customer] })
+  //   .then((response) => {
+  //     console.log(response);
+  //     res.status(200).json({
+  //       message: "Order Created Sucessfully",
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     res.status(500).json({
+  //       error: error ? error.errors[0].message : "Internal Server Error",
+  //     });
+  //   });
+
+  try {
+    var customer = await CustomerModel.findByPk(3);
+    var order = await OrderModel.create(payload);
+    order.setCustomer(customer);
+    res.status(200).json({
+      message: "Order Created Sucessfully",
     });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
 };
 
 // READ ALL ORDER ROUTE
 module.exports.readAll = async (req, res) => {
   try {
     const allUsers = await OrderModel.findAll({
-      attributes: ["trackId"],
-      include: Customer,
-      // include: [
-      //   {
-      //     model: Customer,
-      //     attributes: ["name", "email"],
-      //   },
-      // ],
+      include: {
+        model: CustomerModel,
+        attributes: ["name", "email"],
+      },
     });
     console.log(allUsers);
     res.status(200).json(allUsers);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error: error ? error.errors[0].message : "Internal Server Error",
     });

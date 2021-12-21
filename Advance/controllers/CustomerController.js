@@ -1,8 +1,6 @@
 const CustomerModel = require("../models").Customer;
 const OrderModel = require("../models").Order;
 
-const Order = CustomerModel.hasOne(OrderModel);
-
 // CREATE NEW CUSTOMER ROUTE
 module.exports.create = (req, res) => {
   const customer = {
@@ -31,7 +29,7 @@ module.exports.readAll = async (req, res) => {
   try {
     const allUsers = await CustomerModel.findAll({
       attributes: { exclude: ["password", "createdAt", "updatedAt"] },
-      include: Order
+      include: OrderModel,
     });
     console.log(allUsers);
     res.status(200).json(allUsers);
