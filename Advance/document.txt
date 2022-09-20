@@ -18,6 +18,7 @@ Or, if you don't want/need a background service you can just run:
 // For Migration Run This Command
 
 - sequelize db:migrate
+- npx sequelize-cli db:migrate
 
 
 // this command will revert most the recent migration.
